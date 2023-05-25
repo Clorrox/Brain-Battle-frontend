@@ -1,8 +1,8 @@
 module.exports = {
   root: true,
-  extends: ['@react-native-community', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
+  extends: '@react-native-community',
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': 0,
+    curly: 0,
   },
 };
