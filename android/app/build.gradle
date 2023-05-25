@@ -100,6 +100,11 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+
+        manifestPlaceholders = [
+            facebookAppId: "$System.env.FACEBOOK_APP_ID",
+            facebookClientToken: "$System.env.FACEBOOK_CLIENT_TOKEN"
+        ]
     }
 
     splits {

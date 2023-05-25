@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">BrainBattleFrontend</string>
-    <string name="facebook_app_id">128902393487286</string>
-    <string name="facebook_client_token">c2dc1ccfbc45a6745027c8f92cf4d1c1</string>
 </resources>
