@@ -9,9 +9,9 @@ const Stack = createStackNavigator();
 export const MainNavidation = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="RankingNavigator" component={RankingTopTapsNavigation} />
-      <Stack.Screen name="HomeNavigator" component={HomeBottonsNavigation} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="HomeNavigator" component={HomeBottonsNavigation} />
+      <Stack.Screen name="RankingNavigator" component={RankingTopTapsNavigation} />
     </Stack.Navigator>
   );
 };
