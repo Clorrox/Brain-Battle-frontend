@@ -3,6 +3,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {MainNavidation} from './navigation';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { AuthProvider } from './context/authContext';
 
 const App = () => {
   useEffect(() => {
@@ -19,7 +20,9 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <MainNavidation />
+      <AuthProvider>
+        <MainNavidation />
+      </AuthProvider>
     </NavigationContainer>
   );
 };
