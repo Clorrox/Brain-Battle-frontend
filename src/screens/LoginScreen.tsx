@@ -1,47 +1,72 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useContext} from 'react';
-import {Button, View, Text} from 'react-native';
+import {View, Text, StyleSheet, Dimensions, Animated} from 'react-native';
 import {AuthContext} from '../context/authContext';
+import { Logo } from '../assets';
+import { CustomButton, LoadingAlert } from '../components';
+import { pallete } from '../theme/pallete';
+import { useAnimationLoop } from '../hooks';
+
+const {height: windowHeight} = Dimensions.get('window');
 
 export const LoginScreen = () => {
   const {
-    loggedPlatform,
-    // authLoading,
+    authLoading,
     loginWithFacebook,
     loginWithGoogle,
-    logout,
-    isLoggedIn,
-    user
   } = useContext(AuthContext);
 
+  const logoScale = useAnimationLoop(1, 1.1, 1000);
+
   return (
-    <View style={{flex: 1}}>
-      <View>
-        <Text>
-          {JSON.stringify({loggedPlatform, user}, null, 3)}
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Animated.Image
+          source={Logo}
+          style={{...styles.image, transform: [{scale: logoScale}]}}
+        />
       </View>
-      <View style={{flex: 1, backgroundColor: '#ff0', justifyContent: 'center'}}>
-        {
-          !isLoggedIn && (
-            <>
-              <Button title="Facebook login" onPress={loginWithFacebook} />
-              <Button title="Google login" onPress={loginWithGoogle} />
-            </>
-          )
-        }
+      <View style={styles.buttonsContent}>
+        <Text style={styles.title}>Conéctate con:</Text>
+        <CustomButton
+          label="FACEBOOK"
+          iconName="logo-facebook"
+          iconColor="white"
+          backgroundColor={pallete.blue}
+          onClick={loginWithFacebook}
+        />
+        <CustomButton
+          label="GOOGLE"
+          iconName="logo-google"
+          iconColor="white"
+          backgroundColor={pallete.orange}
+          onClick={loginWithGoogle}
+        />
       </View>
-      <View style={{flex: 1, backgroundColor: '#00f', justifyContent: 'center'}}>
-        {loggedPlatform === 'facebook' && (
-          <Button title="Google login" onPress={loginWithGoogle} />
-        )}
-
-        {loggedPlatform === 'google' && (
-          <Button title="Facebook login" onPress={loginWithFacebook} />
-        )}
-
-        {isLoggedIn && <Button title="Logout" onPress={logout} />}
-      </View>
+      {authLoading && <LoadingAlert/>}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: 'relative',
+  },
+  imageContainer: {
+    height: windowHeight * 0.6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 208,
+    height: 148,
+  },
+  buttonsContent: {
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 20,
+    color: 'black',
+    fontWeight: 'bold',
+  },
+});
