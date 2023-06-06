@@ -1,23 +1,21 @@
-import React, {useEffect, useReducer, useRef} from 'react';
+import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {AuthContext, authReducer} from './';
 import {LoginPlatforms} from './AuthContext';
 import {User} from '../../interfaces';
 import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
 import {
   GoogleSignin,
-  statusCodes,
 } from '@react-native-google-signin/google-signin';
+import { login } from '../../api/brainBattleApi';
 
 export interface AuthState {
   isLoggedIn: boolean;
   loggedPlatform?: LoginPlatforms;
-  authLoading: boolean;
   user?: User;
 }
 
 const INITIAL_STATE: AuthState = {
   isLoggedIn: false,
-  authLoading: true,
 };
 
 interface Props {
@@ -25,6 +23,7 @@ interface Props {
 }
 export const AuthProvider = ({children}: Props) => {
   const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
+  const [authLoading, setAuthLoading] = useState(false);
   const isMounted = useRef(true);
 
   useEffect(() => {
@@ -33,15 +32,32 @@ export const AuthProvider = ({children}: Props) => {
       const facebookToken = await AccessToken.getCurrentAccessToken();
 
       if (isLoggedInGoogle) {
-        const user = await GoogleSignin.getCurrentUser();
+        const tokens = await GoogleSignin.getTokens();
         if (isMounted.current) {
-          console.log(user);
-          dispatch({type: 'login-to-google', payload: {name: 'miguel'}});
+          // Login to our backend
+          setAuthLoading(true);
+          try {
+            const userGameData = await login(tokens.accessToken, 'google');
+            dispatch({type: 'login-to-google', payload: userGameData});
+          } catch (error) {
+            console.log(error);
+          }
+          setAuthLoading(false);
         }
       } else if (facebookToken) {
         if (isMounted.current) {
-          console.log(facebookToken);
-          dispatch({type: 'login-to-facebook', payload: {name: 'oscar'}});
+          // Login to our backend
+          setAuthLoading(true);
+          try {
+            console.log('aquiiiii');
+            const userGameData = await login(facebookToken.accessToken, 'facebook');
+            console.log({userGameData});
+            
+            dispatch({type: 'login-to-facebook', payload: userGameData});
+          } catch (error) {
+            console.log(error);
+          }
+          setAuthLoading(false);
         }
       }
     })();
@@ -52,6 +68,7 @@ export const AuthProvider = ({children}: Props) => {
   }, []);
 
   const loginWithFacebook = async () => {
+    // Get facebook access
     const response = await LoginManager.logInWithPermissions([
       'gaming_profile',
     ]);
@@ -60,33 +77,38 @@ export const AuthProvider = ({children}: Props) => {
     const data = await AccessToken.getCurrentAccessToken();
     if (!data) return;
 
-    console.log({facebook_token: data.accessToken});
-    dispatch({type: 'login-to-facebook', payload: {name: 'oscar'}});
+    // Login to our backend
+    setAuthLoading(true);
+    try {
+      const userGameData = await login(data.accessToken, 'facebook');
+      dispatch({type: 'login-to-facebook', payload: userGameData});
+    } catch (error) {
+      console.log(error);
+    }
+    setAuthLoading(false);
+
     GoogleSignin.signOut();
   };
 
   const loginWithGoogle = async () => {
     try {
+      // Get google access
       await GoogleSignin.signIn();
       const tokens = await GoogleSignin.getTokens();
-      console.log({google_token: tokens.accessToken});
-      dispatch({type: 'login-to-google', payload: {name: 'miguel'}});
-      LoginManager.logOut();
-    } catch (error: any) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-        console.log('cancelado');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-        console.log('en progreso');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-        console.log('no habilitado');
-      } else {
-        // some other error happened
-        console.log('otra cosa salió mal');
+
+      // Login to our backend
+      setAuthLoading(true);
+      try {
+        const userGameData = await login(tokens.accessToken, 'google');
+        dispatch({type: 'login-to-google', payload: userGameData});
+      } catch (error) {
         console.log(error);
       }
+      setAuthLoading(false);
+
+      LoginManager.logOut();
+    } catch (error: any) {
+      console.log(error);
     }
   };
 
@@ -103,6 +125,7 @@ export const AuthProvider = ({children}: Props) => {
     <AuthContext.Provider
       value={{
         ...state,
+        authLoading,
         loginWithFacebook,
         loginWithGoogle,
         logout,
