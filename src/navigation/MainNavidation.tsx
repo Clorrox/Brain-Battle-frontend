@@ -1,12 +1,17 @@
 import React, {useContext} from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '../screens';
+import { LoginScreen, SettingsScreen } from '../screens';
 import { HomeBottonsNavigation } from './HomeBottonsNavigation';
-import { RankingTopTapsNavigation } from './RankingTopTapsNavigation';
 import { pallete } from '../theme/pallete';
 import { AuthContext } from '../context/authContext';
 
-const Stack = createStackNavigator();
+export type MainNavidationParams = {
+  HomeNavigator: undefined,
+  SettingsScreen: undefined,
+  LoginScreen: undefined,
+}
+
+const Stack = createStackNavigator<MainNavidationParams>();
 
 export const MainNavidation = () => {
 
@@ -22,7 +27,7 @@ export const MainNavidation = () => {
         isLoggedIn ? (
           <>
             <Stack.Screen name="HomeNavigator" component={HomeBottonsNavigation} />
-            <Stack.Screen name="RankingNavigator" component={RankingTopTapsNavigation} />
+            <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
           </>
         ) : (
           <Stack.Screen

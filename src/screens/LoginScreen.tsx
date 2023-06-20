@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {View, Text, StyleSheet, Dimensions, Animated} from 'react-native';
 import {AuthContext} from '../context/authContext';
 import { Logo } from '../assets';
-import { CustomButton, LoadingAlert } from '../components';
+import { CustomButton } from '../components';
 import { pallete } from '../theme/pallete';
 import { useAnimationLoop } from '../hooks';
 
@@ -10,7 +10,6 @@ const {height: windowHeight} = Dimensions.get('window');
 
 export const LoginScreen = () => {
   const {
-    authLoading,
     loginWithFacebook,
     loginWithGoogle,
   } = useContext(AuthContext);
@@ -42,7 +41,6 @@ export const LoginScreen = () => {
           onClick={loginWithGoogle}
         />
       </View>
-      {authLoading && <LoadingAlert/>}
     </View>
   );
 };

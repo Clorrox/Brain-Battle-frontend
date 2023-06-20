@@ -6,4 +6,7 @@ export interface User {
     level:          number;
     expToNextLevel: number;
     exp:            number;
+    gamesPlayed:    number;
+    gameswon:       number;
+    lostGames:      number;
 }

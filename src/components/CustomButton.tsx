@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: '#000000',
     elevation: 3,
-    marginTop: 15,
+    marginVertical: 15,
   },
   buttonText: {
     fontSize: 20,

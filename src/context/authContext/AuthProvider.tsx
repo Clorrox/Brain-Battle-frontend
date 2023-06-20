@@ -7,6 +7,7 @@ import {
   GoogleSignin,
 } from '@react-native-google-signin/google-signin';
 import { login } from '../../api/brainBattleApi';
+import { LoadingAlert } from '../../components';
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -131,6 +132,7 @@ export const AuthProvider = ({children}: Props) => {
         logout,
       }}>
       {children}
+      {authLoading && <LoadingAlert />}
     </AuthContext.Provider>
   );
 };

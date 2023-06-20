@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useRef} from 'react';
 import {Animated} from 'react-native';
 
@@ -19,7 +20,6 @@ export const useAnimationLoop = (initialValue: number, finalValue: number, durat
         }),
       ]),
     ).start();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return animatedValue.current;

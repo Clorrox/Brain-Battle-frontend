@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {MainNavidation} from './navigation';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { AuthProvider } from './context/authContext';
+import { UIProvider } from './context/UIContext/UIProvider';
 
 const App = () => {
   useEffect(() => {
@@ -20,9 +21,11 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <AuthProvider>
-        <MainNavidation />
-      </AuthProvider>
+      <UIProvider>
+        <AuthProvider>
+          <MainNavidation />
+        </AuthProvider>
+      </UIProvider>
     </NavigationContainer>
   );
 };
