@@ -11,6 +11,7 @@ interface ContextProps {
     loginWithFacebook: () => Promise<void>;
     loginWithGoogle: () => Promise<void>;
     logout: () => void;
+    updateCountry: (userId: string, value: string, platform: LoginPlatforms) => Promise<void>
 }
 
 export const AuthContext = createContext({} as ContextProps);

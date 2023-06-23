@@ -6,8 +6,9 @@ import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
 import {
   GoogleSignin,
 } from '@react-native-google-signin/google-signin';
-import { login } from '../../api/brainBattleApi';
+import { login, updateUser } from '../../api/brainBattleApi';
 import { LoadingAlert } from '../../components';
+import {getCountry} from 'react-native-localize';
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -53,7 +54,6 @@ export const AuthProvider = ({children}: Props) => {
             console.log('aquiiiii');
             const userGameData = await login(facebookToken.accessToken, 'facebook');
             console.log({userGameData});
-            
             dispatch({type: 'login-to-facebook', payload: userGameData});
           } catch (error) {
             console.log(error);
@@ -82,7 +82,12 @@ export const AuthProvider = ({children}: Props) => {
     setAuthLoading(true);
     try {
       const userGameData = await login(data.accessToken, 'facebook');
-      dispatch({type: 'login-to-facebook', payload: userGameData});
+      if (userGameData.country) {
+        dispatch({type: 'login-to-facebook', payload: userGameData});
+      } else {
+        const countryCode = getCountry();
+        await updateCountry(userGameData.id, countryCode, 'facebook');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -101,7 +106,12 @@ export const AuthProvider = ({children}: Props) => {
       setAuthLoading(true);
       try {
         const userGameData = await login(tokens.accessToken, 'google');
-        dispatch({type: 'login-to-google', payload: userGameData});
+        if (userGameData.country) {
+          dispatch({type: 'login-to-google', payload: userGameData});
+        } else {
+          const countryCode = getCountry();
+          await updateCountry(userGameData.id, countryCode, 'google');
+        }
       } catch (error) {
         console.log(error);
       }
@@ -122,6 +132,11 @@ export const AuthProvider = ({children}: Props) => {
     dispatch({type: 'logout'});
   };
 
+  const updateCountry = async(userId: string, value: string, platform: LoginPlatforms) => {
+    const userUpdated = await updateUser(userId, {country: value});
+    dispatch({type: 'update-state', payload: {user: userUpdated, platform}});
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -130,6 +145,7 @@ export const AuthProvider = ({children}: Props) => {
         loginWithFacebook,
         loginWithGoogle,
         logout,
+        updateCountry,
       }}>
       {children}
       {authLoading && <LoadingAlert />}

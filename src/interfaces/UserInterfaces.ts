@@ -9,4 +9,5 @@ export interface User {
     gamesPlayed:    number;
     gameswon:       number;
     lostGames:      number;
+    country?:       string;
 }

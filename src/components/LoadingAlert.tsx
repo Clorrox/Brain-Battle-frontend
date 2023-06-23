@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
-import Lottie from 'lottie-react-native';
 import { pallete } from '../theme/pallete';
+import { LottieLoading } from './LottieLoading';
 
 const {width: wWidth, height: wHeight} = Dimensions.get('window');
 
@@ -23,17 +23,7 @@ export const LoadingAlert = () => {
         style={{...styles.box, opacity: boxOpacity.current}}
       >
         <View style={styles.box2}>
-          <Lottie
-            source={require('../assets/lottie-animations/lottie-loading.json')}
-            autoPlay
-            colorFilters={[
-              {
-                keypath: 'ball',
-                color: pallete.orange,
-              },
-            ]}
-            style={styles.animationBox}
-          />
+          <LottieLoading size={100} color={pallete.orange} />
           <Text style={styles.textBox}>Procesando</Text>
         </View>
       </Animated.View>
@@ -74,8 +64,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: pallete.gray,
     fontWeight: '600',
-  },
-  animationBox: {
-    width: 100,
   },
 });

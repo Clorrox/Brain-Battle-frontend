@@ -1,30 +1,39 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import {pallete} from '../theme/pallete';
-import { HeaderGoBack, MusicControl, SessionSection } from '../components';
-
-// import {MainNavidationParams} from '../navigation/MainNavidation';
-// import {StackScreenProps} from '@react-navigation/stack';
-
-// interface Props extends StackScreenProps<MainNavidationParams> {}
+import {CountryControl, HeaderGoBack, MusicControl, SeparatorView, SessionSection} from '../components';
+import { AuthContext } from '../context/authContext';
 
 export const SettingsScreen = () => {
+  const {user} = useContext(AuthContext);
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="height" enabled>
       <HeaderGoBack title="Ajustes" />
-      <MusicControl/>
-      <View style={styles.allSpace} />
-      <SessionSection />
-    </View>
+      <View style={styles.settingsContainer}>
+        {/* music controls */}
+        <MusicControl />
+
+        {/* country controls */}
+        <CountryControl countryCode={user?.country || 'US'} />
+
+        {/* separator */}
+        <SeparatorView />
+
+        {/* change session */}
+        <SessionSection />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: pallete.primary,
+    backgroundColor: pallete.dark,
   },
-  allSpace: {
+  settingsContainer: {
     flex: 1,
+    padding: 15,
   },
 });

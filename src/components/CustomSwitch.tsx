@@ -11,8 +11,8 @@ export const CustomSwitch = ({ isEnabled, onChange }: Props) => {
 
   return (
     <Switch
-      trackColor={{false: pallete.gray, true: pallete.dark}}
-      thumbColor={pallete.blue}
+      trackColor={{false: pallete.gray, true: pallete.blue}}
+      thumbColor={pallete.white}
       onValueChange={onChange}
       value={isEnabled}
     />

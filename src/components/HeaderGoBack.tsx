@@ -12,7 +12,7 @@ interface Props {
 
 export const HeaderGoBack = ({
   title,
-  backgroundColor = pallete.dark,
+  backgroundColor = pallete.blue,
   color = pallete.white,
 }: Props) => {
   const {goBack} = useNavigation();

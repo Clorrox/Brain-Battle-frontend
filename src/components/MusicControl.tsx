@@ -24,7 +24,7 @@ export const MusicControl = () => {
     <>
       <View style={styles.switchContainer}>
         <View style={styles.switchName}>
-          <Icon name="musical-notes" color={pallete.dark} size={30} />
+          <Icon name="musical-notes" color={pallete.white} size={30} />
           <Text style={styles.switchText}>Música</Text>
         </View>
         <CustomSwitch isEnabled={soundSettings.play} onChange={handlePlay} />
@@ -35,7 +35,7 @@ export const MusicControl = () => {
         maximumValue={100}
         thumbTintColor="#fff"
         minimumTrackTintColor="#fff"
-        maximumTrackTintColor={pallete.dark}
+        maximumTrackTintColor={pallete.blue}
         onSlidingComplete={handleVolume}
       />
     </>
@@ -45,15 +45,14 @@ export const MusicControl = () => {
 const styles = StyleSheet.create({
   switchText: {
     fontSize: 24,
-    color: pallete.dark,
+    color: pallete.white,
     fontWeight: 'bold',
   },
   switchContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    marginTop: 10,
+    marginVertical: 10,
   },
   switchName: {
     flexDirection: 'row',
