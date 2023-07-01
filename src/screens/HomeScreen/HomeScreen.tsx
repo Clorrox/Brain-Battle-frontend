@@ -1,12 +1,14 @@
-import React, {useContext} from 'react';
+import React, {} from 'react';
 import {View, Image, Text} from 'react-native';
 import {StyleSheet} from 'react-native';
-import {pallete} from '../theme/pallete';
-import {HomeHeader} from '../components';
-import {AuthContext} from '../context/authContext';
+import {pallete} from '../../theme/pallete';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../redux/store';
+import { HomeHeader } from './components/HomeHeader';
 
 export const HomeScreen = () => {
-  const {user} = useContext(AuthContext);
+
+  const {user} = useSelector((state: AppStore) => state.auth);
 
   return (
     <View style={styles.container}>
@@ -15,7 +17,7 @@ export const HomeScreen = () => {
         style={{flex: 0.6, justifyContent: 'center', alignItems: 'center'}}>
         <View style={{gap: 10}}>
           <Image
-            source={{uri: user?.imgUrl}}
+            source={{uri: user.imgUrl}}
             style={{width: 200, height: 200, borderRadius: 100}}
           />
           <Text
@@ -28,7 +30,7 @@ export const HomeScreen = () => {
               textShadowRadius: 1,
               textTransform: 'uppercase'
             }}>
-            {user?.name}
+            {user.name}
           </Text>
         </View>
       </View>

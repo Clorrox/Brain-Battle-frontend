@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {pallete} from '../theme/pallete';
-import {CustomSwitch} from './CustomSwitch';
-import {UIContext} from '../context/UIContext/UIContext';
+import {pallete} from '../../../theme/pallete';
+import {CustomSwitch} from '../../../components/CustomSwitch';
+import {UIContext} from '../../../context/UIContext/UIContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Slider from '@react-native-community/slider';
 

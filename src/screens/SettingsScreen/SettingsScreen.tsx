@@ -1,11 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, StyleSheet, KeyboardAvoidingView} from 'react-native';
-import {pallete} from '../theme/pallete';
-import {CountryControl, HeaderGoBack, MusicControl, SeparatorView, SessionSection} from '../components';
-import { AuthContext } from '../context/authContext';
+import {pallete} from '../../theme/pallete';
+import { HeaderGoBack, SeparatorView } from '../../components';
+import { MusicControl, CountryControl, SessionSection } from './components';
 
 export const SettingsScreen = () => {
-  const {user} = useContext(AuthContext);
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="height" enabled>
@@ -15,7 +14,7 @@ export const SettingsScreen = () => {
         <MusicControl />
 
         {/* country controls */}
-        <CountryControl countryCode={user?.country || 'US'} />
+        <CountryControl />
 
         {/* separator */}
         <SeparatorView />

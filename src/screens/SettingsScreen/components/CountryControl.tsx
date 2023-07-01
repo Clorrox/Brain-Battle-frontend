@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -7,44 +7,34 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import {useRequestData} from '../hooks';
-import {Country} from '../interfaces';
-import {pallete} from '../theme/pallete';
+import {pallete} from '../../../theme/pallete';
 import {CountryModal} from './CountryModal';
-import {LottieLoading} from './LottieLoading';
+import {LottieLoading} from '../../../components/LottieLoading';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { SettingsContext } from '../context';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../../redux/store';
 
 const {width: wWidth, height: wheight} = Dimensions.get('window');
 
-interface Props {
-  countryCode: string;
-}
 
-export const CountryControl = ({countryCode}: Props) => {
-  const [openModal, setOpenModal] = useState(false);
-  const {data, isLoading} = useRequestData<Country | undefined>(
-    `https://restcountries.com/v3.1/alpha/${countryCode}?fields=name,cca2,flags`,
-  );
+export const CountryControl = () => {
+  const {authLoading} = useSelector((state: AppStore) => state.auth);
+  const { currentCountry, isModalOpen, toggleModal, loadings } = useContext(SettingsContext);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+  console.log({isModalOpen});
 
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.title}>Tu país</Text>
-        {!isLoading && data ? (
+        {!loadings.loadingCurrent && !authLoading ? (
           <View style={styles.countryContainer}>
             <View style={styles.flagContainer}>
-              <Image source={{uri: data.flags.png}} style={styles.flag} />
-              <Text style={styles.countryName}>{data.name.common}</Text>
+              <Image source={{uri: currentCountry.flag}} style={styles.flag} />
+              <Text style={styles.countryName}>{currentCountry.name}</Text>
             </View>
-            <TouchableOpacity onPress={handleOpenModal}>
+            <TouchableOpacity onPress={toggleModal}>
               <Icon name="create" size={35} color={pallete.white} />
             </TouchableOpacity>
           </View>
@@ -52,7 +42,7 @@ export const CountryControl = ({countryCode}: Props) => {
           <LottieLoading size={60} color={pallete.orange} />
         )}
       </View>
-      {openModal && <CountryModal onCloseModal={handleCloseModal} />}
+      {isModalOpen && <CountryModal />}
     </>
   );
 };

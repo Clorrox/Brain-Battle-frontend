@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,17 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import {pallete} from '../theme/pallete';
-import {AuthContext} from '../context/authContext';
+import {pallete} from '../../../theme/pallete';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {MainNavidationParams} from '../navigation/MainNavidation';
+import {MainNavidationParams} from '../../../navigation/MainNavidation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
+import { AppStore } from '../../../redux/store';
 
 const {width: wWidth} = Dimensions.get('window');
 
 export const HomeHeader = () => {
-  const {user} = useContext(AuthContext);
+  const {user} = useSelector((state: AppStore) => state.auth);
   const {navigate} =
     useNavigation<NavigationProp<MainNavidationParams, 'HomeNavigator'>>();
 
@@ -24,11 +25,11 @@ export const HomeHeader = () => {
       <View>
         <View style={styles.levelHeader}>
           <Icon name="star" color={pallete.blue} size={55} />
-          <Text style={styles.levelText}>{user?.level}</Text>
+          <Text style={styles.levelText}>{user.level}</Text>
         </View>
         <View style={styles.progressHeader}>
           <Text style={styles.progressText}>
-            {user?.exp}/{user?.expToNextLevel}
+            {user.exp}/{user.expToNextLevel}
           </Text>
         </View>
       </View>

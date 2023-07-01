@@ -1,3 +1,3 @@
-export { RankingTopTapsNavigation } from './RankingTopTapsNavigation';
-export { HomeBottonsNavigation } from './HomeBottonsNavigation';
-export {MainNavidation} from './MainNavidation';
+export * from './HomeBottonsNavigation';
+export * from './MainNavidation';
+export * from './RankingTopTapsNavigation';

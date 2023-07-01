@@ -1,5 +1,6 @@
 export * from './UserInterfaces';
-export * from './CountryInterface';
+export * from '../screens/SettingsScreen/interfaces/CountryInterface';
+export * from './AuthInterface';
 
 export interface SoundSettings {
     play: boolean;

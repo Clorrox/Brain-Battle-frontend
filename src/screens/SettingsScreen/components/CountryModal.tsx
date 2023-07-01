@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,37 +7,23 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import {pallete} from '../theme/pallete';
-import {useFilterData, useRequestData} from '../hooks';
-import {Country} from '../interfaces';
-import { LottieLoading } from './LottieLoading';
+import {pallete} from '../../../theme/pallete';
 import { CountryList } from './CountryList';
+import { SettingsContext } from '../context';
+import { LottieLoading } from '../../../components';
 
 const {width: wWidth, height: wheight} = Dimensions.get('window');
 
-interface Props {
-  onCloseModal: () => void;
-}
-
-export const CountryModal = ({onCloseModal}: Props) => {
+export const CountryModal = () => {
+  const { toggleModal, loadings } = useContext(SettingsContext);
   const [inputField, setInputField] = useState('');
   const containerRef = useRef(null);
 
-  const {data, isLoading} = useRequestData<Country[]>(
-    'https://restcountries.com/v3.1/all?fields=name,cca2,flags',
-    [],
-  );
-  const {filterData, newData} = useFilterData<Country[]>(data);
-
   const handlePressOut = (event: GestureResponderEvent) => {
     if (event.target === containerRef.current) {
-      onCloseModal();
+      toggleModal();
     }
   };
-
-  useEffect(() => {
-    filterData('name', inputField);
-  }, [inputField]);
 
   return (
     <TouchableOpacity
@@ -53,8 +38,8 @@ export const CountryModal = ({onCloseModal}: Props) => {
           value={inputField}
           onChangeText={e => setInputField(e)}
         />
-        {!isLoading && newData ? (
-          <CountryList data={newData} onCloseModal={onCloseModal} />
+        {!loadings.loadingAll ? (
+          <CountryList inputField={inputField} />
         ) : (
           <LottieLoading size={70} color={pallete.orange} />
         )}

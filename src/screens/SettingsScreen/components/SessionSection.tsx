@@ -1,17 +1,16 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {View, Text} from 'react-native';
-import {CustomButton} from './CustomButton';
-import {AuthContext} from '../context/authContext';
-import {pallete} from '../theme/pallete';
+import {CustomButton} from '../../../components/CustomButton';
+import {pallete} from '../../../theme/pallete';
+import { useSelector } from 'react-redux';
+import { AppDispatch, AppStore } from '../../../redux/store';
+import { loginWithFacebookAction, loginWithGoogleAction, logoutAction } from '../../../redux/actions';
+import { useDispatch } from 'react-redux';
 
 export const SessionSection = () => {
-  const {
-    loginWithFacebook,
-    loginWithGoogle,
-    logout,
-    loggedPlatform,
-  } = useContext(AuthContext);
+  const {loggedPlatform} = useSelector((state: AppStore) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <View style={styles.buttonsContent}>
@@ -22,7 +21,7 @@ export const SessionSection = () => {
           iconName="logo-facebook"
           iconColor="white"
           backgroundColor={pallete.blue}
-          onClick={loginWithFacebook}
+          onClick={() => dispatch(loginWithFacebookAction({}))}
         />
       ) : (
         <CustomButton
@@ -30,14 +29,14 @@ export const SessionSection = () => {
           iconName="logo-google"
           iconColor="white"
           backgroundColor={pallete.orange}
-          onClick={loginWithGoogle}
+          onClick={() => dispatch(loginWithGoogleAction({}))}
         />
       )}
       <Text style={styles.title}>o</Text>
       <CustomButton
         label="LOGOUT"
         backgroundColor={pallete.gray}
-        onClick={logout}
+        onClick={logoutAction}
       />
     </View>
   );
